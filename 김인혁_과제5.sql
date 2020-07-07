@@ -58,6 +58,11 @@ SELECT m.employee_id mgr_id, CONCAT(m.first_name,m.last_name) mgr_name, e.employ
 FROM employees e, jobs, employees m
 WHERE e.job_id = jobs.job_id AND e.manager_id = m.employee_id;
 
+SELECT m.employee_id mgr_id, CONCAT(m.first_name,m.last_name) mgr_name, e.employee_id, CONCAT(e.first_name,e.last_name) name,
+        e.job_id, jobs.job_title
+FROM employees e JOIN jobs ON(e.job_id = jobs.job_id) JOIN employees m ON(e.manager_id = m.employee_id);
+
+
 
 
 
