@@ -134,6 +134,11 @@ SUBQUERY : SQL 내부에서 사용된 SQL (Main 쿼리에서 사용된 쿼리)
 3. 다중행, 단일컬럼
 4. 다중행, 복수컬럼
 
+서브쿼리에서 메인쿼리의 컬럼을 사용하는 유무에 따른 분류
+1. 서브쿼리에서 메인쿼리의 컬럼 사용 :correlated subquery ==> 상호 연관 서브쿼리
+                            ==> 서브쿼리 단독으로 실행하는 것이 불가능
+2. 서브쿼리에서 메인쿼리의 컬럼 미사용 : non correlated subquery ==> 비상호 연관 서브쿼리
+                            ==> 서브쿼리 단독으로 실행하는 것이 가능
 SMITH 사원이 속한 부서에 속하는 사원들은 누가 있을까????
 
 2번의 쿼리가 필요
@@ -169,12 +174,54 @@ SUBQUERY는 WHERE절에서 기술되고 그 것을 사용하는 쿼리를 메인
 1. 스칼라 서브쿼리 : SELECT 절에서 사용된 서브쿼리
 * 제약사항 : 반드시 서브쿼리가 하나의 행, 하나의 컬럼을 반환 해야한다.
 
+스칼라 서브쿼리가 다중행 복수컬럼을 리턴하는 경우 (x)
 SELECT empno, ename, (SELECT deptno, dname FROM dept)
 FROM emp;
 
+스칼라 서브쿼리가 단일행 복수컬럼을 리턴하는 경우 (x)
+SELECT empno, ename, (SELECT deptno, dname FROM dept WHERE deptno =10)
+FROM emp;
+
+스칼라 서브쿼리가 단일행, 단일컬럼을 리턴하는 경우 (o)
+SELECT empno, ename,
+        (SELECT deptno FROM dept WHERE deptno =10) deptno,
+        (SELECT dname FROM dept WHERE deptno =10) dname
+FROM emp;
+
+메인 쿼리의 컬럼을 사용하는 스칼라 서브쿼리
+SELECT empno, ename, deptno,
+            (SELECT dname FROM dept WHERE deptno = emp.deptno) dname
+FROM emp;
+
+IN-LINE VIEW : 그동안 많이 사용
 
 
+SUBQUERY : WHERE 절에서 사용된 것
+SMITH가 속한 부서에 속하는 사원들 조회
+WHERE 절에서 서브 쿼리 사용시 주의점
+연산자와 서브쿼리의 반환 행 수 주의
+= 연산자 사용시 서브쿼리에서 여러개의 행(값)을 리턴하면 논리적으로 맞지가 않다.
+ IN연산자를 사용시 서브쿼리에서 리턴하는 여러개 행(값)과 비교가 가능
+SMITH 20 ALLEN 30 
+SELECT *
+FROM emp
+WHERE deptno IN (SELECT deptno
+                FROM emp
+                WHERE ename IN ('SMITH', 'ALLEN'));
 
+
+실습 sub1
+
+SELECT count(*)
+FROM emp
+WHERE sal > (SELECT AVG(sal)
+             FROM emp);   
+
+실습 sub2
+SELECT *
+FROM emp
+WHERE sal > (SELECT AVG(sal)
+             FROM emp);   
 
 
 
