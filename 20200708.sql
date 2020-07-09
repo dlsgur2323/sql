@@ -74,8 +74,8 @@ WHERE pid NOT IN ( SELECT pid
 sub6
 SELECT *
 FROM cycle 
-WHERE cid = 1 AND
-      pid IN (SELECT pid FROM cycle WHERE cid = 2);
+WHERE cid = 1 
+  AND pid IN (SELECT pid FROM cycle WHERE cid = 2);
 
 
 
