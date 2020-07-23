@@ -110,7 +110,7 @@ SELECT (TO_DATE(:month, 'YYYYMM') + level -1) dt,
 
 ----------------------------------------------------------------------------------------
 
-
+달력만들기 수정1
 SELECT  
         MAX(DECODE(d, 1, dt)) sun, MAX(DECODE(d, 2, dt)) mon, MAX(DECODE(d, 3, dt)) tue,
         MAX(DECODE(d, 4, dt)) wed, MAX(DECODE(d, 5, dt)) thu, MAX(DECODE(d, 6, dt)) fri,
@@ -150,7 +150,7 @@ SELECT   NVL(SUM(DECODE(TO_CHAR(dt, 'MM'), 01, sales)), 0) jan,
 FROM sales;
 
 
-
+달력만들기 수정2
 SELECT 
         MAX(DECODE(d, 1, dt)) sun, MAX(DECODE(d, 2, dt)) mon, MAX(DECODE(d, 3, dt)) tue,
         MAX(DECODE(d, 4, dt)) wed, MAX(DECODE(d, 5, dt)) thu, MAX(DECODE(d, 6, dt)) fri,
